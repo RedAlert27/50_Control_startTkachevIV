@@ -3,49 +3,48 @@ import { Sym } from "./Sym"
 export type BoardParam = {
     row: number,
     col: number
-  }
+}
 
-// Абстрактный класс доски
-export abstract class Board<T extends GameType>{
+export abstract class Board<T extends GameType> {
     cells: Sym<T>[]
-
-    static row: number
-    static col: number
+    static row: number = 0
+    static col: number = 0
 
     constructor(
         str: Sym<T>[],
         row?: number,
         col?: number,
     ) {
-        // TODO
-        // При наличии row или col 
-        //  инициализировать соответсвующие поля
-        // Инициализировать массив cells
-        this.cells = []
+        // Инициализация статических полей
+        if (row !== undefined) {
+            ;(this.constructor as any).row = row
+        }
+        if (col !== undefined) {
+            ;(this.constructor as any).col = col
+        }
+        
+        // Инициализация cells
+        this.cells = str.map(sym => sym.clone())
     }
 
-    abstract clone(): Board<T>     
+    abstract clone(): Board<T>
 
     isFill(): boolean {
-        // TODO
-        // Возвращет true если на доске нет пустых клеток
-        // Реомендуется реализация без циклов,
-        //  с использованием функций массивов
-        return true
+        return this.cells.every(cell => cell.sym !== "_" && cell.sym !== " ")
     }
 
     move(index: number, sym: Sym<T>): boolean {
-        // TODO
-        // Если ячейка this.cell[index] занята - возвращает false
-        // Записывает в ячейку cell и возвращает true
+        if (index < 0 || index >= this.cells.length) {
+            return false
+        }
+        if (this.cells[index].sym !== "_" && this.cells[index].sym !== " ") {
+            return false
+        }
+        this.cells[index] = sym.clone()
         return true
     }
 
-    status(): string { 
-        // TODO
-        // Если доска заполнена возвращает "Игра закончена"
-        //   если игра не закончена, строку "Идет игра".
-        return "Идет игра"
+    status(): string {
+        return this.isFill() ? "Игра закончена" : "Идет игра"
     }
-
 }
