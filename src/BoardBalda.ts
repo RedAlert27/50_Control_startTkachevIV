@@ -1,24 +1,33 @@
 import { Board, BoardParam } from "./Board"
-import { Sym } from "./Sym"
+import { SymBalda } from "./SymBalda"
 
 export class BoardBalda extends Board<GameBalda> {
     constructor(
-        str: string | Sym<GameBalda>[] = "балда",
+        str: string | SymBalda[] = "балда",
         init: boolean = true
     ) {
-        // TODO
-        // Если длина str==5, то дополняет ее 10 пробелами до и после
-        // Вызывает родительский конструктор,
-        //  если init, то дополнительно инициализируются
-        //  статические поля класса
-        super({} as Sym<GameBalda>[])
+        // Преобразование входных данных
+        let cells: SymBalda[]
+        if (Array.isArray(str)) {
+            cells = str
+        } else {
+            if (str.length === 5) {
+                str = "          " + str + "          "
+            }
+            cells = SymBalda.StringToSyms<GameBalda>(str)
+        }
+
+        // Инициализация статических полей
+        if (init) {
+            ;(BoardBalda as any).row = BoardBaldaParam.row
+            ;(BoardBalda as any).col = BoardBaldaParam.col
+        }
+
+        super(cells, BoardBaldaParam.row, BoardBaldaParam.col)
     }
+
     clone(): BoardBalda {
-        // TODO
-        // Функция должна вернуть копию объекта
-        // Если init, то дополнительно инициализируются
-        //  статические поля класса
-        return this
+        return new BoardBalda([...this.cells], false)
     }
 }
 
