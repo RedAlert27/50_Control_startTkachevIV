@@ -1,13 +1,13 @@
 import { SymError } from "./Error"
 
-// Обощенный класс для проверки символа хода
 export class Sym<T extends GameType> {
     private field: string = ""
 
     constructor(sym: string = "_") {
-        // TODO
-        // Вызывает checkSym (которая будет перегружана в наследниках)
-        // Если checkSym возвращает false, выбрасывает исключение SymError  
+        if (!this.checkSym(sym)) {
+            throw SymError
+        }
+        this.field = sym
     }
 
     make(sym: string): Sym<T> {
@@ -15,34 +15,30 @@ export class Sym<T extends GameType> {
     }
 
     clone(): Sym<T> {
-        return this.make(this.sym)
+        return this.make(this.field)
     }
 
     checkSym(sym: string): boolean {
-        // TODO
-        // Общая проверка для всех игр.
-        // Если длина строки равна 1 то true,
-        //  иначе false
-            return false
+        return sym.length === 1
     }
 
-    get sym() {
+    get sym(): string {
         return this.field
     }
 
-    StringToSyms<T extends GameType>(str: string): Sym<T>[] {
-        const result = new Array(str.length)
-        for (let i = 0; i < str.length; i++)
-            result[i] = this.make(str[i])
+    static StringToSyms<T extends GameType>(str: string): Sym<T>[] {
+        const result: Sym<T>[] = []
+        for (let i = 0; i < str.length; i++) {
+            result.push(new Sym(str[i]))
+        }
         return result
     }
 
-    SymsToString(syms: Sym<T>[]): string {
+    static SymsToString<T extends GameType>(syms: Sym<T>[]): string {
         let result: string = ""
-        for (let i = 0; i < syms.length; i++)
-            result = result + syms[i]
+        for (let i = 0; i < syms.length; i++) {
+            result = result + syms[i].sym
+        }
         return result
     }
-
 }
-
