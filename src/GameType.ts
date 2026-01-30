@@ -1,4 +1,4 @@
-interface GameType{}
+interface GameType {}
 
 interface GameTic extends GameType {}
 
