@@ -1,21 +1,25 @@
 import { Input } from "./Input"
-import { SymTic } from "./SymTic"
+import { SymBalda } from "./SymBalda"
 
-export class InputTic extends Input<GameTic> {
-    private static x = new SymTic("X")
-    private static o = new SymTic("0")
-    private _sym: SymTic
-
-    constructor() {
-        super()
-        this._sym = InputTic.x
+export class InputBalda extends Input<GameBalda> {
+    override get html(): string {
+        return "<input id='inputBalda' placeholder='Введите букву'></input>"
     }
 
-    get sym(): SymTic {
-        return this._sym
+    get sym(): SymBalda {
+        try {
+            const inputElement = document.getElementById('inputBalda') as HTMLInputElement
+            const value = inputElement ? inputElement.value.charAt(0) || ' ' : ' '
+            return new SymBalda(value)
+        } catch (error) {
+            return new SymBalda(' ')
+        }
     }
 
     move(): void {
-        this._sym = this._sym === InputTic.x ? InputTic.o : InputTic.x
+        const inputElement = document.getElementById('inputBalda') as HTMLInputElement
+        if (inputElement) {
+            inputElement.value = ''
+        }
     }
 }
