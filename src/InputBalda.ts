@@ -1,19 +1,25 @@
 import { Input } from "./Input"
-import { Sym } from "./Sym"
+import { SymBalda } from "./SymBalda"
 
-export class InputBalda extends Input<GameBalda>{
-    override get html(): string  {
-        return "<input id='inputBalda'></input>"
+export class InputBalda extends Input<GameBalda> {
+    override get html(): string {
+        return "<input id='inputBalda' placeholder='Введите букву'></input>"
     }
 
-    get sym(): Sym<GameBalda> {
-        // TODO
-        //  возвращает символ из поля ввода        
-        return {} as Sym<GameBalda>
+    get sym(): SymBalda {
+        try {
+            const inputElement = document.getElementById('inputBalda') as HTMLInputElement
+            const value = inputElement ? inputElement.value.charAt(0) || ' ' : ' '
+            return new SymBalda(value)
+        } catch (error) {
+            return new SymBalda(' ')
+        }
     }
+
     move(): void {
-        // TODO
-        //  очищает поле ввода
+        const inputElement = document.getElementById('inputBalda') as HTMLInputElement
+        if (inputElement) {
+            inputElement.value = ''
+        }
     }
-
 }
