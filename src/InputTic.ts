@@ -1,7 +1,7 @@
 import { Input } from "./Input"
 import { SymTic } from "./SymTic"
 
-export class InputTic extends Input<GameTic>{
+export class InputTic extends Input<GameTic> {
     private static x = new SymTic("X")
     private static o = new SymTic("0")
     private _sym: SymTic
@@ -16,10 +16,6 @@ export class InputTic extends Input<GameTic>{
     }
 
     move(): void {
-        if (this._sym == InputTic.x)
-            this._sym = InputTic.o
-        else
-            this._sym = InputTic.x
+        this._sym = this._sym === InputTic.x ? InputTic.o : InputTic.x
     }
-
 }
