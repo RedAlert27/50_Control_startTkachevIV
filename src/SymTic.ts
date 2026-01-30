@@ -1,13 +1,10 @@
 import { Sym } from "./Sym"
 
 export class SymTic extends Sym<GameTic> {
-
     override checkSym(sym: string): boolean {
-        // TODO
-        // Вызыват checkSym родителя и 
-        //  дополнительно проверяет на то, 
-        //  что символ один из _X0
+        if (!super.checkSym(sym)) {
             return false
+        }
+        return sym === "_" || sym === "X" || sym === "0"
     }
-
 }
